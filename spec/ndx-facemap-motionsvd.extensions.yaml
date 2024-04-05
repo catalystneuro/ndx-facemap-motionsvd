@@ -1,8 +1,22 @@
 groups:
-- neurodata_type_def: TetrodeSeries
-  neurodata_type_inc: ElectricalSeries
-  doc: An extension of ElectricalSeries to include the tetrode ID for each time series.
-  attributes:
-  - name: trode_id
-    dtype: int32
-    doc: The tetrode ID.
+- neurodata_type_def: MotionSVDSeries
+  neurodata_type_inc: TimeSeries
+  doc: An extension of TimeSeries to include the motion SVD components.
+  datasets:
+  - name: data
+    dtype: float
+    shape:
+    - null
+    - 2
+    doc: motion SVD temporal components.
+- neurodata_type_def: MotionSVDMasks
+  neurodata_type_inc: DynamicTable
+  doc: An extension of DynamicTable to include the motion SVD masks.
+  datasets:
+  - name: image_mask
+    neurodata_type_inc: VectorData
+    dtype: float
+    shape:
+    - null
+    - 2
+    doc: motion SVD mask.
