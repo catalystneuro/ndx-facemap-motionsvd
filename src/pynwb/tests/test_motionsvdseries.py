@@ -6,9 +6,9 @@ TODO: Modify these tests to test your extension neurodata type.
 import numpy as np
 
 from pynwb import NWBHDF5IO, NWBFile
-from pynwb.core import DynamicTableRegion, DynamicTable
+from pynwb.core import DynamicTableRegion
 from pynwb.testing.mock.file import mock_NWBFile
-from pynwb.testing import TestCase, remove_test_file, NWBH5IOFlexMixin
+from pynwb.testing import TestCase, remove_test_file
 
 from ndx_facemap_motionsvd import MotionSVDSeries, MotionSVDMasks
 
@@ -51,7 +51,7 @@ class TestMotionSVDSeriesConstructor(TestCase):
             unit="n.a.",
         )
 
-        self.assertEqual(motionsvd_series.name, "name")
+        self.assertEqual(motionsvd_series.name, "MotionSVDSeries")
         self.assertEqual(motionsvd_series.description, "description")
         np.testing.assert_array_equal(motionsvd_series.data, data)
         self.assertEqual(motionsvd_series.rate, 1000.0)
@@ -107,4 +107,3 @@ class TestMotionSVDSeriesSimpleRoundtrip(TestCase):
         with NWBHDF5IO(self.path, mode="r", load_namespaces=True) as io:
             read_nwbfile = io.read()
             self.assertContainerEqual(behavior_module, read_nwbfile.processing["behavior"])
-
