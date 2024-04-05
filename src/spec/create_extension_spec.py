@@ -29,6 +29,21 @@ def main():
     # TODO: define your new data types
     # see https://pynwb.readthedocs.io/en/stable/tutorials/general/extensions.html
     # for more information
+    motionsvd_masks = NWBGroupSpec(
+        neurodata_type_def="MotionSVDMasks",
+        neurodata_type_inc="DynamicTable",
+        doc="An extension of DynamicTable to include the motion SVD masks.",
+        datasets=[
+            NWBDatasetSpec(
+                name="image_mask",
+                doc="motion SVD mask.",
+                dtype="float",
+                shape=(None, None),
+                neurodata_type_inc="VectorData",
+            ),
+        ],
+    )
+
     motionsvd_series = NWBGroupSpec(
         neurodata_type_def="MotionSVDSeries",
         neurodata_type_inc="TimeSeries",
@@ -39,23 +54,16 @@ def main():
                 doc="motion SVD temporal components.",
                 dtype="float",
                 shape=(None, 2),
-            )
-        ],
-    )
-    motionsvd_masks = NWBGroupSpec(
-        neurodata_type_def="MotionSVDMasks",
-        neurodata_type_inc="DynamicTable",
-        doc="An extension of DynamicTable to include the motion SVD masks.",
-        datasets=[
+            ),
             NWBDatasetSpec(
-                name="image_mask",
-                doc="motion SVD mask.",
-                dtype="float",
-                shape=(None, 2),
-                neurodata_type_inc="VectorData",
+                name="motion_mask",
+                doc="references row(s) of MotionSVDMasks",
+                neurodata_type_inc="DynamicTableRegion",
+                quantity="?",
             ),
         ],
     )
+
 
     # TODO: add all of your new data types to this list
     new_data_types = [motionsvd_series,motionsvd_masks]

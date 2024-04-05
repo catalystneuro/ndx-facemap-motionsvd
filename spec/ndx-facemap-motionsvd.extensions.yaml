@@ -9,6 +9,10 @@ groups:
     - null
     - 2
     doc: motion SVD temporal components.
+  - name: motion_mask
+    neurodata_type_inc: DynamicTableRegion
+    doc: references row(s) of MotionSVDMasks
+    quantity: '?'
 - neurodata_type_def: MotionSVDMasks
   neurodata_type_inc: DynamicTable
   doc: An extension of DynamicTable to include the motion SVD masks.
@@ -18,5 +22,5 @@ groups:
     dtype: float
     shape:
     - null
-    - 2
+    - null
     doc: motion SVD mask.
