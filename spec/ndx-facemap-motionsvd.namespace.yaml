@@ -1,0 +1,11 @@
+namespaces:
+- author:
+  - Alessandra Trapani
+  contact:
+  - alessandra.trapani@catalystneuro.com
+  doc: extension to store the motion SVD output from FaceMap software
+  name: ndx-facemap-motionsvd
+  schema:
+  - namespace: core
+  - source: ndx-facemap-motionsvd.extensions.yaml
+  version: 0.1.0
