@@ -9,7 +9,7 @@ groups:
     - null
     - 2
     doc: motion SVD temporal components.
-  - name: motion_mask
+  - name: motion_masks
     neurodata_type_inc: DynamicTableRegion
     doc: references row(s) of MotionSVDMasks
     quantity: '?'

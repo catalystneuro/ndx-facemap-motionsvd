@@ -56,7 +56,7 @@ def main():
                 shape=(None, 2),
             ),
             NWBDatasetSpec(
-                name="motion_mask",
+                name="motion_masks",
                 doc="references row(s) of MotionSVDMasks",
                 neurodata_type_inc="DynamicTableRegion",
                 quantity="?",
