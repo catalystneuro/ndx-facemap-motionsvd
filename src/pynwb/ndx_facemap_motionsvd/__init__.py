@@ -23,7 +23,7 @@ load_namespaces(str(__spec_path))
 # below or write a custom class and register it using the class decorator
 # `@register_class("MotionSVDSeries", "ndx-facemap-motionsvd")`
 MotionSVDSeries = get_class("MotionSVDSeries", "ndx-facemap-motionsvd")
-MotionSVDSeries = get_class("MotionSVDMasks", "ndx-facemap-motionsvd")
+MotionSVDMasks = get_class("MotionSVDMasks", "ndx-facemap-motionsvd")
 
 # NOTE: `widgets/tetrode_series_widget.py` adds a "widget"
 # attribute to the MotionSVDSeries class. This attribute is used by NWBWidgets.
