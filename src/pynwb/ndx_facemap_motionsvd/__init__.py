@@ -27,9 +27,6 @@ MotionSVDMasks = get_class("MotionSVDMasks", "ndx-facemap-motionsvd")
 
 # NOTE: `widgets/tetrode_series_widget.py` adds a "widget"
 # attribute to the MotionSVDSeries class. This attribute is used by NWBWidgets.
-# Delete the `widgets` subpackage or the `tetrode_series_widget.py` module
-# if you do not want to define a custom widget for your extension neurodata
-# type.
 
 # Remove these functions from the package
 del load_namespaces, get_class
