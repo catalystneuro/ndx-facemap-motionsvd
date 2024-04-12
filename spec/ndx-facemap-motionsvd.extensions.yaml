@@ -7,12 +7,11 @@ groups:
     dtype: float
     shape:
     - null
-    - 2
+    - null
     doc: motion SVD temporal components.
   - name: motion_masks
     neurodata_type_inc: DynamicTableRegion
     doc: references row(s) of MotionSVDMasks
-    quantity: '?'
 - neurodata_type_def: MotionSVDMasks
   neurodata_type_inc: DynamicTable
   doc: An extension of DynamicTable to include the motion SVD masks.
@@ -24,3 +23,13 @@ groups:
     - null
     - null
     doc: motion SVD mask.
+  - name: downsampling_factor
+    dtype: float
+    doc: downsampling factor used to process the behavioural video
+    quantity: '?'
+  - name: mask_coordinates
+    dtype: float
+    shape:
+    - 4
+    doc: mask location in downsampled frame reference (top, rigth, bottom, left)
+    quantity: '?'
