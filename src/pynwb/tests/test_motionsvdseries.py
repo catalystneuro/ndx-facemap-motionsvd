@@ -8,7 +8,7 @@ import numpy as np
 from pynwb import NWBHDF5IO, NWBFile
 from pynwb.core import DynamicTableRegion
 from pynwb.testing.mock.file import mock_NWBFile
-from pynwb.testing import TestCase, remove_test_file
+from pynwb.testing import TestCase, remove_test_file, NWBH5IOFlexMixin
 
 from ndx_facemap_motionsvd import MotionSVDSeries, MotionSVDMasks
 
@@ -106,4 +106,43 @@ class TestMotionSVDSeriesSimpleRoundtrip(TestCase):
 
         with NWBHDF5IO(self.path, mode="r", load_namespaces=True) as io:
             read_nwbfile = io.read()
-            self.assertContainerEqual(behavior_module, read_nwbfile.processing["behavior"])
+            self.assertContainerEqual(motionsvd_series, read_nwbfile.processing["behavior"]["MotionSVDSeries"])
+            self.assertContainerEqual(motion_masks_table, read_nwbfile.processing["behavior"]["MotionSVDMasks"])
+
+class TestMotionSVDSeriesExtensionRoundtripPyNWB(NWBH5IOFlexMixin, TestCase):
+    """Complex, more complete roundtrip test for MotionSVDSeries using pynwb.testing infrastructure."""
+
+    def getContainerType(self):
+        return "MotionSVDSeries"
+
+    def addContainer(self):
+        set_up_nwbfile(self.nwbfile)
+        behavior_module = self.nwbfile.create_processing_module(name="behavior", description="behavioral data")
+
+        n_components = 10
+
+        motion_masks_table = MotionSVDMasks(name="MotionSVDMasks", description="motion masks")
+        for _ in range(n_components):
+            motion_masks_table.add_row(
+                image_mask=np.random.rand(256, 256),
+            )
+
+        motion_masks = DynamicTableRegion(
+            name="motion_masks", data=list(range(0, n_components)), description="all the mask", table=motion_masks_table
+        )
+
+        data = np.random.rand(100,n_components)
+        motionsvd_series = MotionSVDSeries(
+            name="MotionSVDSeries",
+            description="description",
+            data=data,
+            timestamps = np.linspace(0,100,100),
+            motion_masks=motion_masks,
+            unit="n.a.",
+        )
+
+        behavior_module.add(motion_masks_table)
+        behavior_module.add(motionsvd_series)
+
+    def getContainer(self, nwbfile: NWBFile):
+        return nwbfile.processing["behavior"]["MotionSVDSeries"]
