@@ -36,6 +36,7 @@ class TestMotionSVDSeriesConstructor(TestCase):
             description="motion masks",
             downsampling_factor=4.0,
             mask_coordinates=[0, 0, 256, 256],
+            processed_frame_dimension=[256, 256],
         )
         for _ in range(n_components):
             motion_masks_table.add_row(
@@ -88,6 +89,7 @@ class TestMotionSVDSeriesSimpleRoundtrip(TestCase):
             description="motion masks",
             downsampling_factor=4.0,
             mask_coordinates=[0, 0, 256, 256],
+            processed_frame_dimension=[256, 256],
         )
         for _ in range(n_components):
             motion_masks_table.add_row(
@@ -137,6 +139,7 @@ class TestMotionSVDSeriesExtensionRoundtripPyNWB(NWBH5IOFlexMixin, TestCase):
             description="motion masks",
             downsampling_factor=4.0,
             mask_coordinates=[0, 0, 256, 256],
+            processed_frame_dimension=[256, 256],
         )
         for _ in range(n_components):
             motion_masks_table.add_row(

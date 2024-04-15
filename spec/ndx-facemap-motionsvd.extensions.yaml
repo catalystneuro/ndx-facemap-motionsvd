@@ -29,7 +29,12 @@ groups:
     dtype: float
     doc: Downsampling factor used to process the behavioural video.
   - name: mask_coordinates
-    dtype: float
+    dtype: int
     shape:
     - 4
     doc: (x1, y1, x2, y2), Mask location in downsampled frame reference (top, right, bottom, left).
+  - name: processed_frame_dimension
+    dtype: int
+    shape:
+    - 2
+    doc: The dimension of the processed frame [width, height].
