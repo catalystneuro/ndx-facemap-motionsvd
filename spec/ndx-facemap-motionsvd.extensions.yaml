@@ -8,10 +8,12 @@ groups:
     shape:
     - null
     - null
-    doc: motion SVD temporal components.
+    doc: The data values of the motion SVD temporal components.
+          Must be 2D, where the first dimension must be time,
+          the second dimension must be the number of components.
   - name: motion_masks
     neurodata_type_inc: DynamicTableRegion
-    doc: references row(s) of MotionSVDMasks
+    doc: References row(s) of MotionSVDMasks.",
 - neurodata_type_def: MotionSVDMasks
   neurodata_type_inc: DynamicTable
   doc: An extension of DynamicTable to include the motion SVD masks.
@@ -25,11 +27,9 @@ groups:
     doc: motion SVD mask.
   - name: downsampling_factor
     dtype: float
-    doc: downsampling factor used to process the behavioural video
-    quantity: '?'
+    doc: Downsampling factor used to process the behavioural video.
   - name: mask_coordinates
     dtype: float
     shape:
     - 4
-    doc: mask location in downsampled frame reference (top, rigth, bottom, left)
-    quantity: '?'
+    doc: (x1, y1, x2, y2), Mask location in downsampled frame reference (top, rigth, bottom, left).

@@ -31,7 +31,12 @@ class TestMotionSVDSeriesConstructor(TestCase):
         """Test that the constructor for MotionSVDSeries sets values as expected."""
         n_components = 10
 
-        motion_masks_table = MotionSVDMasks(name="MotionSVDMasks", description="motion masks")
+        motion_masks_table = MotionSVDMasks(
+            name="MotionSVDMasks",
+            description="motion masks",
+            downsampling_factor=4.0,
+            mask_coordinates=[0, 0, 256, 256],
+        )
         for _ in range(n_components):
             motion_masks_table.add_row(
                 image_mask=np.random.rand(256, 256),
@@ -78,7 +83,12 @@ class TestMotionSVDSeriesSimpleRoundtrip(TestCase):
 
         n_components = 10
 
-        motion_masks_table = MotionSVDMasks(name="MotionSVDMasks", description="motion masks")
+        motion_masks_table = MotionSVDMasks(
+            name="MotionSVDMasks",
+            description="motion masks",
+            downsampling_factor=4.0,
+            mask_coordinates=[0, 0, 256, 256],
+        )
         for _ in range(n_components):
             motion_masks_table.add_row(
                 image_mask=np.random.rand(256, 256),
@@ -109,6 +119,7 @@ class TestMotionSVDSeriesSimpleRoundtrip(TestCase):
             self.assertContainerEqual(motionsvd_series, read_nwbfile.processing["behavior"]["MotionSVDSeries"])
             self.assertContainerEqual(motion_masks_table, read_nwbfile.processing["behavior"]["MotionSVDMasks"])
 
+
 class TestMotionSVDSeriesExtensionRoundtripPyNWB(NWBH5IOFlexMixin, TestCase):
     """Complex, more complete roundtrip test for MotionSVDSeries using pynwb.testing infrastructure."""
 
@@ -121,7 +132,12 @@ class TestMotionSVDSeriesExtensionRoundtripPyNWB(NWBH5IOFlexMixin, TestCase):
 
         n_components = 10
 
-        motion_masks_table = MotionSVDMasks(name="MotionSVDMasks", description="motion masks")
+        motion_masks_table = MotionSVDMasks(
+            name="MotionSVDMasks",
+            description="motion masks",
+            downsampling_factor=4.0,
+            mask_coordinates=[0, 0, 256, 256],
+        )
         for _ in range(n_components):
             motion_masks_table.add_row(
                 image_mask=np.random.rand(256, 256),
@@ -131,12 +147,12 @@ class TestMotionSVDSeriesExtensionRoundtripPyNWB(NWBH5IOFlexMixin, TestCase):
             name="motion_masks", data=list(range(0, n_components)), description="all the mask", table=motion_masks_table
         )
 
-        data = np.random.rand(100,n_components)
+        data = np.random.rand(100, n_components)
         motionsvd_series = MotionSVDSeries(
             name="MotionSVDSeries",
             description="description",
             data=data,
-            timestamps = np.linspace(0,100,100),
+            timestamps=np.linspace(0, 100, 100),
             motion_masks=motion_masks,
             unit="n.a.",
         )
