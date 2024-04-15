@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from hdmf.utils import docval, popargs, popargs_to_dict, get_docval
+from hdmf.utils import docval, popargs_to_dict, get_docval
 from pynwb import register_class
 from pynwb import TimeSeries
 from pynwb.core import DynamicTable, DynamicTableRegion
@@ -83,7 +83,7 @@ class MotionSVDMasks(DynamicTable):
         },
         {
             "name": "mask_coordinates",
-            "doc": "[x1, y1, x2, y2], Mask location in downsampled frame reference (top, rigth, bottom, left).",
+            "doc": "[x1, y1, x2, y2], Mask location in downsampled frame reference (top, right, bottom, left).",
             "type": (list,tuple,Iterable),
             "shape":(4,),
         },
