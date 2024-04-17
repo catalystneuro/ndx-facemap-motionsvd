@@ -37,6 +37,7 @@ motion_masks_table = MotionSVDMasks(
     description="motion masks",
     downsampling_factor=4.0,
     mask_coordinates=[0, 0, 256, 256],
+    processed_frame_dimension=[256, 256],
 )
 for _ in range(n_components):
     motion_masks_table.add_row(
