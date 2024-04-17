@@ -21,14 +21,14 @@ load_namespaces(str(__spec_path))
 # TODO: Define your classes here to make them accessible at the package level.
 # Either have PyNWB generate a class from the spec using `get_class` as shown
 # below or write a custom class and register it using the class decorator
-# `@register_class("TetrodeSeries", "ndx-facemap-motionsvd")`
-TetrodeSeries = get_class("TetrodeSeries", "ndx-facemap-motionsvd")
-
-# NOTE: `widgets/tetrode_series_widget.py` adds a "widget"
-# attribute to the TetrodeSeries class. This attribute is used by NWBWidgets.
-# Delete the `widgets` subpackage or the `tetrode_series_widget.py` module
-# if you do not want to define a custom widget for your extension neurodata
-# type.
-
+# `@register_class("MotionSVDSeries", "ndx-facemap-motionsvd")`
+# MotionSVDSeries = get_class("MotionSVDSeries", "ndx-facemap-motionsvd")
+# MotionSVDMasks = get_class("MotionSVDMasks", "ndx-facemap-motionsvd")
+from .facemap_motionsvd import MotionSVDSeries,MotionSVDMasks
+# attribute to the MotionSVDSeries class. This attribute is used by NWBWidgets.
+__all__ = [
+    "MotionSVDSeries",
+    "MotionSVDMasks",
+]
 # Remove these functions from the package
 del load_namespaces, get_class

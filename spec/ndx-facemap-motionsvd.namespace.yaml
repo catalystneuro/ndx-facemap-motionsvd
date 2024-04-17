@@ -7,5 +7,11 @@ namespaces:
   name: ndx-facemap-motionsvd
   schema:
   - namespace: core
+    neurodata_types:
+    - TimeSeries
+  - namespace: hdmf-common
+    neurodata_types:
+    - DynamicTable
+    - DynamicTableRegion
   - source: ndx-facemap-motionsvd.extensions.yaml
   version: 0.1.0
