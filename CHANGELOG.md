@@ -1,6 +1,6 @@
 # Changelog for ndx-facemap-motionsvd
 
-## 0.2.0 (Unreleased)
+## 0.2.0 (2026-11-20)
 
 - `MotionSVDMasks` gains three optional fields: `average_motion`, the per-pixel mean motion
   Facemap subtracts before the decomposition; a `singular_value` column with one value per
