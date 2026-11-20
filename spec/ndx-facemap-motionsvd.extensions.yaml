@@ -5,12 +5,15 @@ groups:
   datasets:
   - name: data
     dtype: float
+    dims:
+    - dim_0
+    - dim_1
     shape:
     - null
     - null
-    doc: The data values of the motion SVD temporal components.
-          Must be 2D, where the first dimension must be time,
-          the second dimension must be the number of components.
+    doc: The data values of the motion SVD temporal components. Must be 2D, 
+      where the first dimension must be time, the second dimension must be the 
+      number of components.
   - name: motion_masks
     neurodata_type_inc: DynamicTableRegion
     doc: References row(s) of MotionSVDMasks.
@@ -21,6 +24,9 @@ groups:
   - name: image_mask
     neurodata_type_inc: VectorData
     dtype: float
+    dims:
+    - dim_0
+    - dim_1
     shape:
     - null
     - null
@@ -30,30 +36,40 @@ groups:
     doc: Downsampling factor used to process the behavioural video.
   - name: mask_coordinates
     dtype: int
+    dims:
+    - dim_0
     shape:
     - 4
-    doc: (x1, y1, x2, y2), Mask location in downsampled frame reference (top, right, bottom, left).
+    doc: (x1, y1, x2, y2), Mask location in downsampled frame reference (top, 
+      right, bottom, left).
   - name: processed_frame_dimension
     dtype: int
+    dims:
+    - dim_0
     shape:
     - 2
     doc: The dimension of the processed frame [width, height].
   - name: singular_value
     neurodata_type_inc: VectorData
     dtype: float
+    dims:
+    - dim_0
     shape:
     - null
-    doc: Singular value of each component, the square root of the motion variance
-      the component explains.
+    doc: Singular value of each component, the square root of the motion 
+      variance the component explains.
     quantity: '?'
   - name: average_motion
     dtype: float
+    dims:
+    - dim_0
+    - dim_1
     shape:
     - null
     - null
-    doc: Mean motion of each pixel, the image Facemap subtracts before the
-      decomposition. Same shape as each image_mask, so image_mask weighted by the
-      MotionSVDSeries data plus this image approximates the motion.
+    doc: Mean motion of each pixel, the image Facemap subtracts before the 
+      decomposition. Same shape as each image_mask, so image_mask weighted by 
+      the MotionSVDSeries data plus this image approximates the motion.
     quantity: '?'
   links:
   - name: source_video
