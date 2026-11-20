@@ -1,0 +1,13 @@
+# Scheduled runs live in their own workflow so that GitHub disabling them after 60 days without
+# repository activity leaves the push and pull request triggers of run_all_tests.yml working.
+name: Run all tests (scheduled)
+on:
+  schedule:
+    - cron: '0 5 * * 0'  # once every Sunday at midnight ET
+
+permissions:
+  contents: read
+
+jobs:
+  call-run-all-tests:
+    uses: ./.github/workflows/run_all_tests.yml

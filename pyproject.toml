@@ -4,23 +4,21 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ndx-facemap-motionsvd"
-version = "0.1.0"
+version = "0.2.0"
 authors = [
     { name="Alessandra Trapani", email="alessandra.trapani@catalystneuro.com" },
 ]
 description = "extension to store the motion SVD output from FaceMap software"
 readme = "README.md"
-# requires-python = ">=3.8"
-license = {text = "BSD-3"}
+requires-python = ">=3.10"
+license = "BSD-3-Clause"
 classifiers = [
-    # TODO: add classifiers before release
-    # "Programming Language :: Python",
-    # "Programming Language :: Python :: 3.8",
-    # "Programming Language :: Python :: 3.9",
-    # "Programming Language :: Python :: 3.10",
-    # "Programming Language :: Python :: 3.11",
-    # "Programming Language :: Python :: 3.12",
-    # "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: BSD License",
@@ -32,17 +30,36 @@ keywords = [
     'ndx-extension',
 ]
 dependencies = [
-    "pynwb>=2.6.0",
-    "hdmf>=3.13.0",
+    "pynwb>=3.0.0",  # 3.0.0 is the first release compatible with hdmf 4 and NumPy 2
+    "hdmf>=4.0.0",  # 4.0.0 is the first release compatible with NumPy 2
 ]
 
-# TODO: add URLs before release
-# [project.urls]
-# "Homepage" = "https://github.com/organization/package"
-# "Documentation" = "https://package.readthedocs.io/"
-# "Bug Tracker" = "https://github.com/organization/package/issues"
-# "Discussions" = "https://github.com/organization/package/discussions"
-# "Changelog" = "https://github.com/organization/package/blob/main/CHANGELOG.md"
+[dependency-groups]
+test = [
+    "coverage>=7.5.4",
+    "pytest>=8.2.2",
+    "pytest-cov>=5.0.0",
+    "pytest-subtests>=0.12.1",
+    "python-dateutil>=2.8.2",
+]
+
+docs = [
+    "hdmf-docutils>=0.4.7",
+]
+
+dev = [
+    "black>=24.4.2",
+    "codespell>=2.3.0",
+    "pre-commit>=3.5.0",
+    "ruff>=0.4.10",
+    {include-group = "docs"},
+    {include-group = "test"},
+]
+
+[project.urls]
+"Homepage" = "https://github.com/catalystneuro/ndx-facemap-motionsvd"
+"Bug Tracker" = "https://github.com/catalystneuro/ndx-facemap-motionsvd/issues"
+"Changelog" = "https://github.com/catalystneuro/ndx-facemap-motionsvd/blob/main/CHANGELOG.md"
 
 [tool.hatch.build]
 include = [
@@ -81,7 +98,7 @@ skip = "htmlcov,.git,.mypy_cache,.pytest_cache,.coverage,*.pdf,*.svg,venvs,.tox,
 
 [tool.coverage.run]
 branch = true
-source = ["src/pynwb"]
+source = ["ndx_facemap_motionsvd"]
 
 [tool.coverage.report]
 exclude_lines = [
@@ -95,7 +112,7 @@ preview = true
 exclude = ".git|.mypy_cache|.tox|.venv|venv|.ipynb_checkpoints|_build/|dist/|__pypackages__|.ipynb|docs/"
 
 [tool.ruff]
-select = ["E", "F", "T100", "T201", "T203"]
+lint.select = ["E", "F", "T100", "T201", "T203", "C901"]
 exclude = [
   ".git",
   ".tox",
@@ -106,9 +123,9 @@ exclude = [
 ]
 line-length = 120
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "src/pynwb/ndx_facemap_motionsvd/__init__.py" = ["E402", "F401"]
 "src/spec/create_extension_spec.py" = ["T201"]
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 17
