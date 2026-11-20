@@ -7,7 +7,7 @@ from pynwb.spec import NWBDatasetSpec, NWBGroupSpec, NWBLinkSpec, NWBNamespaceBu
 def main():
     ns_builder = NWBNamespaceBuilder(
         name="""ndx-facemap-motionsvd""",
-        version="""0.1.0""",
+        version="""0.2.0""",
         doc="""extension to store the motion SVD output from FaceMap software""",
         author=[
             "Alessandra Trapani",
