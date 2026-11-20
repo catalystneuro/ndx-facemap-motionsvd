@@ -74,7 +74,7 @@ class MotionSVDMasks(DynamicTable):
             "name": "description",
             "type": str,
             "doc": "Description of what is in this MotionSVDMasks",
-            "default": "stimulation parameters",
+            "default": "Spatial masks of the motion SVD components, one row per component.",
         },
         {
             "name": "downsampling_factor",

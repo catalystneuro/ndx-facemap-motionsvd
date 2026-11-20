@@ -13,7 +13,7 @@ groups:
           the second dimension must be the number of components.
   - name: motion_masks
     neurodata_type_inc: DynamicTableRegion
-    doc: References row(s) of MotionSVDMasks.",
+    doc: References row(s) of MotionSVDMasks.
 - neurodata_type_def: MotionSVDMasks
   neurodata_type_inc: DynamicTable
   doc: An extension of DynamicTable to include the motion SVD masks.
