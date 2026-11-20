@@ -29,6 +29,7 @@ def main():
             NWBDatasetSpec(
                 name="data",
                 dtype="float",
+                dims=["num_times", "num_components"],
                 shape=[None, None],
                 doc=(
                     "The data values of the motion SVD temporal components. Must be 2D, where the first dimension "
@@ -52,30 +53,42 @@ def main():
                 name="image_mask",
                 neurodata_type_inc="VectorData",
                 dtype="float",
+                dims=["rows", "columns"],
                 shape=[None, None],
-                doc="motion SVD mask.",
+                doc=(
+                    "Mask of each component over the box given by mask_coordinates, a (height, width) array whose "
+                    "rows run down the downsampled frame and whose columns run across it. The masks of all "
+                    "components are stacked along the rows, and image_mask_index marks where each one ends."
+                ),
             ),
             NWBDatasetSpec(
                 name="downsampling_factor",
                 dtype="float",
-                doc="Downsampling factor used to process the behavioural video.",
+                doc="Factor by which the video was spatially downsampled in each axis before the decomposition.",
             ),
             NWBDatasetSpec(
                 name="mask_coordinates",
                 dtype="int",
+                dims=["row_start, column_start, row_end, column_end"],
                 shape=[4],
-                doc="(x1, y1, x2, y2), Mask location in downsampled frame reference (top, right, bottom, left).",
+                doc=(
+                    "Box the masks cover in the downsampled frame, as [row_start, column_start, row_end, "
+                    "column_end]: 0-based pixel indices, start included and end excluded, so row_end - row_start "
+                    "is the height of each mask and column_end - column_start its width."
+                ),
             ),
             NWBDatasetSpec(
                 name="processed_frame_dimension",
                 dtype="int",
+                dims=["height, width"],
                 shape=[2],
-                doc="The dimension of the processed frame [width, height].",
+                doc="Size of the downsampled frame, as [height, width] in pixels: the number of rows, then columns.",
             ),
             NWBDatasetSpec(
                 name="singular_value",
                 neurodata_type_inc="VectorData",
                 dtype="float",
+                dims=["num_components"],
                 shape=[None],
                 doc=(
                     "Singular value of each component, the square root of the motion variance the component "
@@ -86,6 +99,7 @@ def main():
             NWBDatasetSpec(
                 name="average_motion",
                 dtype="float",
+                dims=["height", "width"],
                 shape=[None, None],
                 doc=(
                     "Mean motion of each pixel, the image Facemap subtracts before the decomposition. Same shape as "

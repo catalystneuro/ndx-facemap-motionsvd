@@ -6,8 +6,8 @@ groups:
   - name: data
     dtype: float
     dims:
-    - dim_0
-    - dim_1
+    - num_times
+    - num_components
     shape:
     - null
     - null
@@ -25,35 +25,42 @@ groups:
     neurodata_type_inc: VectorData
     dtype: float
     dims:
-    - dim_0
-    - dim_1
+    - rows
+    - columns
     shape:
     - null
     - null
-    doc: motion SVD mask.
+    doc: Mask of each component over the box given by mask_coordinates, a 
+      (height, width) array whose rows run down the downsampled frame and whose 
+      columns run across it. The masks of all components are stacked along the 
+      rows, and image_mask_index marks where each one ends.
   - name: downsampling_factor
     dtype: float
-    doc: Downsampling factor used to process the behavioural video.
+    doc: Factor by which the video was spatially downsampled in each axis before
+      the decomposition.
   - name: mask_coordinates
     dtype: int
     dims:
-    - dim_0
+    - row_start, column_start, row_end, column_end
     shape:
     - 4
-    doc: (x1, y1, x2, y2), Mask location in downsampled frame reference (top, 
-      right, bottom, left).
+    doc: 'Box the masks cover in the downsampled frame, as [row_start, column_start,
+      row_end, column_end]: 0-based pixel indices, start included and end excluded,
+      so row_end - row_start is the height of each mask and column_end - column_start
+      its width.'
   - name: processed_frame_dimension
     dtype: int
     dims:
-    - dim_0
+    - height, width
     shape:
     - 2
-    doc: The dimension of the processed frame [width, height].
+    doc: 'Size of the downsampled frame, as [height, width] in pixels: the number
+      of rows, then columns.'
   - name: singular_value
     neurodata_type_inc: VectorData
     dtype: float
     dims:
-    - dim_0
+    - num_components
     shape:
     - null
     doc: Singular value of each component, the square root of the motion 
@@ -62,8 +69,8 @@ groups:
   - name: average_motion
     dtype: float
     dims:
-    - dim_0
-    - dim_1
+    - height
+    - width
     shape:
     - null
     - null

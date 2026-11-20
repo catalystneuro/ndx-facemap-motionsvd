@@ -210,3 +210,27 @@ class TestMotionSVDMasksOptionalFieldsRoundtrip(TestCase):
             read_table = read_nwbfile.processing["behavior"]["MotionSVDMasks"]
             self.assertContainerEqual(motion_masks_table, read_table)
             self.assertIs(read_table.source_video, read_nwbfile.acquisition["FaceVideo"])
+
+
+class TestMotionSVDMasksAddRowChecks(TestCase):
+    """add_row checks each mask against the box and the box against the frame."""
+
+    def test_mask_shape_must_match_box(self):
+        motion_masks_table = MotionSVDMasks(
+            downsampling_factor=4.0,
+            mask_coordinates=[2, 3, 12, 8],
+            processed_frame_dimension=[16, 12],
+        )
+        motion_masks_table.add_row(image_mask=np.random.rand(10, 5))
+        with self.assertRaisesRegex(ValueError, "image_mask has shape"):
+            motion_masks_table.add_row(image_mask=np.random.rand(5, 10))
+
+    def test_box_must_fit_in_frame(self):
+        motion_masks_table = MotionSVDMasks(
+            downsampling_factor=4.0,
+            mask_coordinates=[0, 0, 12, 16],
+            processed_frame_dimension=[16, 12],
+        )
+        with self.assertRaisesRegex(ValueError, "do not fit"):
+            motion_masks_table.add_row(image_mask=np.random.rand(12, 16))
+
