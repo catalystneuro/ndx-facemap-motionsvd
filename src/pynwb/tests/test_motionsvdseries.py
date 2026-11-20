@@ -7,6 +7,7 @@ import numpy as np
 
 from pynwb import NWBHDF5IO, NWBFile
 from pynwb.core import DynamicTableRegion
+from pynwb.image import ImageSeries
 from pynwb.testing.mock.file import mock_NWBFile
 from pynwb.testing import TestCase, remove_test_file, NWBH5IOFlexMixin
 
@@ -165,3 +166,47 @@ class TestMotionSVDSeriesExtensionRoundtripPyNWB(NWBH5IOFlexMixin, TestCase):
 
     def getContainer(self, nwbfile: NWBFile):
         return nwbfile.processing["behavior"]["MotionSVDSeries"]
+
+
+class TestMotionSVDMasksOptionalFieldsRoundtrip(TestCase):
+    """Roundtrip of the optional singular values, average motion and source video link."""
+
+    def setUp(self):
+        self.nwbfile = set_up_nwbfile()
+        self.path = "test_optional_fields.nwb"
+
+    def tearDown(self):
+        remove_test_file(self.path)
+
+    def test_roundtrip(self):
+        video = ImageSeries(
+            name="FaceVideo",
+            description="face camera",
+            data=np.zeros((2, 64, 48), dtype="uint8"),
+            unit="n.a.",
+            rate=30.0,
+        )
+        self.nwbfile.add_acquisition(video)
+
+        motion_masks_table = MotionSVDMasks(
+            name="MotionSVDMasks",
+            downsampling_factor=4.0,
+            mask_coordinates=[0, 0, 16, 12],
+            processed_frame_dimension=[16, 12],
+            average_motion=np.random.rand(16, 12),
+            source_video=video,
+        )
+        for singular_value in [30.0, 20.0, 10.0]:
+            motion_masks_table.add_row(image_mask=np.random.rand(16, 12), singular_value=singular_value)
+
+        behavior_module = self.nwbfile.create_processing_module(name="behavior", description="behavioral data")
+        behavior_module.add(motion_masks_table)
+
+        with NWBHDF5IO(self.path, mode="w") as io:
+            io.write(self.nwbfile)
+
+        with NWBHDF5IO(self.path, mode="r", load_namespaces=True) as io:
+            read_nwbfile = io.read()
+            read_table = read_nwbfile.processing["behavior"]["MotionSVDMasks"]
+            self.assertContainerEqual(motion_masks_table, read_table)
+            self.assertIs(read_table.source_video, read_nwbfile.acquisition["FaceVideo"])

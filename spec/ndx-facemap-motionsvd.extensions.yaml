@@ -38,3 +38,25 @@ groups:
     shape:
     - 2
     doc: The dimension of the processed frame [width, height].
+  - name: singular_value
+    neurodata_type_inc: VectorData
+    dtype: float
+    shape:
+    - null
+    doc: Singular value of each component, the square root of the motion variance
+      the component explains.
+    quantity: '?'
+  - name: average_motion
+    dtype: float
+    shape:
+    - null
+    - null
+    doc: Mean motion of each pixel, the image Facemap subtracts before the
+      decomposition. Same shape as each image_mask, so image_mask weighted by the
+      MotionSVDSeries data plus this image approximates the motion.
+    quantity: '?'
+  links:
+  - name: source_video
+    target_type: ImageSeries
+    doc: The behavioral video the motion SVD was computed from.
+    quantity: '?'

@@ -2,6 +2,7 @@ from collections.abc import Iterable
 from hdmf.utils import docval, popargs_to_dict, get_docval
 from pynwb import register_class
 from pynwb import TimeSeries
+from pynwb.image import ImageSeries
 from pynwb.core import DynamicTable, DynamicTableRegion
 
 namespace = "ndx-facemap-motionsvd"
@@ -59,8 +60,23 @@ class MotionSVDMasks(DynamicTable):
     An extension of DynamicTable to include the motion SVD masks.
     """
 
-    __fields__ = ("downsampling_factor", "mask_coordinates", "processed_frame_dimension")
-    __columns__ = ({"name": "image_mask", "description": "Motion SVD mask.", "index": True},)
+    __fields__ = (
+        "downsampling_factor",
+        "mask_coordinates",
+        "processed_frame_dimension",
+        "average_motion",
+        "source_video",
+    )
+    __columns__ = (
+        {"name": "image_mask", "description": "Motion SVD mask.", "index": True},
+        {
+            "name": "singular_value",
+            "description": (
+                "Singular value of each component, the square root of the motion variance the component explains."
+            ),
+            "required": False,
+        },
+    )
 
     @docval(
         {
@@ -93,9 +109,28 @@ class MotionSVDMasks(DynamicTable):
             "type": (list, tuple, Iterable),
             "shape": (2,),
         },
+        {
+            "name": "average_motion",
+            "doc": "Mean motion of each pixel, the image Facemap subtracts before the decomposition.",
+            "type": "array_data",
+            "shape": (None, None),
+            "default": None,
+        },
+        {
+            "name": "source_video",
+            "doc": "The behavioral video the motion SVD was computed from.",
+            "type": ImageSeries,
+            "default": None,
+        },
     )
     def __init__(self, **kwargs):
-        keys_to_set = ("downsampling_factor", "mask_coordinates", "processed_frame_dimension")
+        keys_to_set = (
+            "downsampling_factor",
+            "mask_coordinates",
+            "processed_frame_dimension",
+            "average_motion",
+            "source_video",
+        )
         args_to_set = popargs_to_dict(keys_to_set, kwargs)
 
         super().__init__(**kwargs)
