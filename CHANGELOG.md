@@ -1,5 +1,11 @@
 # Changelog for ndx-facemap-motionsvd
 
+## Upcoming
+
+- `MotionSVDMasks` keeps its MeaningsTables when a file is read. The constructor now accepts all
+  `DynamicTable` arguments, including `meanings_tables`.
+  [Issue #6](https://github.com/catalystneuro/ndx-facemap-motionsvd/issues/6)
+
 ## 0.2.0 (2026-11-20)
 
 - `MotionSVDMasks` gains three optional fields: `average_motion`, the per-pixel mean motion
