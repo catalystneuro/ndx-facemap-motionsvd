@@ -3,8 +3,11 @@
 TODO: Modify these tests to test your extension neurodata type.
 """
 
+import unittest
+
 import numpy as np
 
+import hdmf.common
 from pynwb import NWBHDF5IO, NWBFile
 from pynwb.core import DynamicTableRegion
 from pynwb.image import ImageSeries
@@ -210,6 +213,45 @@ class TestMotionSVDMasksOptionalFieldsRoundtrip(TestCase):
             read_table = read_nwbfile.processing["behavior"]["MotionSVDMasks"]
             self.assertContainerEqual(motion_masks_table, read_table)
             self.assertIs(read_table.source_video, read_nwbfile.acquisition["FaceVideo"])
+
+
+@unittest.skipIf(not hasattr(hdmf.common, "MeaningsTable"), "this version of hdmf does not support MeaningsTable")
+class TestMotionSVDMasksMeaningsTablesRoundtrip(TestCase):
+    """Roundtrip of a MeaningsTable attached to a MotionSVDMasks column."""
+
+    def setUp(self):
+        self.nwbfile = set_up_nwbfile()
+        self.path = "test_meanings_tables.nwb"
+
+    def tearDown(self):
+        remove_test_file(self.path)
+
+    def test_roundtrip(self):
+        motion_masks_table = MotionSVDMasks(
+            name="MotionSVDMasks",
+            downsampling_factor=4.0,
+            mask_coordinates=[0, 0, 16, 12],
+            processed_frame_dimension=[16, 12],
+        )
+        motion_masks_table.add_column(name="face_region", description="face region the component covers")
+        motion_masks_table.add_row(image_mask=np.random.rand(16, 12), face_region="whisker_pad")
+        meanings = hdmf.common.MeaningsTable(target=motion_masks_table["face_region"])
+        meanings.add_row(value="whisker_pad", meaning="the whisker pad")
+        motion_masks_table.add_meanings_table(meanings)
+
+        behavior_module = self.nwbfile.create_processing_module(name="behavior", description="behavioral data")
+        behavior_module.add(motion_masks_table)
+
+        with NWBHDF5IO(self.path, mode="w") as io:
+            io.write(self.nwbfile)
+
+        with NWBHDF5IO(self.path, mode="r") as io:
+            read_table = io.read().processing["behavior"]["MotionSVDMasks"]
+            self.assertIsInstance(read_table, MotionSVDMasks)
+            read_meanings = read_table.get_meanings_for_column("face_region")
+            self.assertIsNotNone(read_meanings)
+            self.assertEqual(list(read_meanings["value"].data[:]), ["whisker_pad"])
+            self.assertEqual(list(read_meanings["meaning"].data[:]), ["the whisker pad"])
 
 
 class TestMotionSVDMasksAddRowChecks(TestCase):

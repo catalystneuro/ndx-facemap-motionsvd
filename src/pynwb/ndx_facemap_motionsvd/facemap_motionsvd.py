@@ -91,7 +91,7 @@ class MotionSVDMasks(DynamicTable):
             "doc": "Name of this MotionSVDMasks",
             "default": "MotionSVDMasks",
         },
-        *get_docval(DynamicTable.__init__, "id", "columns", "colnames"),
+        *[arg for arg in get_docval(DynamicTable.__init__) if arg["name"] not in ("name", "description")],
         {
             "name": "description",
             "type": str,
